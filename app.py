@@ -9,24 +9,6 @@ from langchain.memory import ConversationBufferMemory
 from langchain_community.vectorstores import FAISS
 from interface import css, bot_template, user_template
 
-# Define a function to inject custom HTML and JavaScript
-def inject_custom_html(html_content):
-  st.components.v1.html(html_content, height=0)
-
-# HTML and JavaScript code to position the input box
-custom_html = """
-<style>
-body {
-  display: flex;
-  flex-direction: column-reverse;
-  height: 100vh;
-}
-</style>
-<script>
-document.getElementById("chat_input").style.position = "fixed";
-document.getElementById("chat_input").style.bottom = "0";
-</script>
-"""
 
 
 #  getting the text data from the pdf
@@ -89,7 +71,6 @@ def main():
         
 
     st.header("CATEXAM")
-    inject_custom_html(custom_html)
     user_demand = st.text_input("Set a cat or exam in seconds", key="chat_input")
 
     if user_demand:
