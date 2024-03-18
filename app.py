@@ -1,7 +1,7 @@
 import streamlit as st
 from dotenv import load_dotenv
 from PyPDF2 import PdfReader
-from langchain_text_splitters import CharacterTextSplitter
+from langchain_text_splitters import TokenTextSplitter
 from langchain_community.embeddings import OpenAIEmbeddings
 from langchain_community.chat_models import ChatOpenAI
 from langchain.chains import ConversationalRetrievalChain
@@ -21,13 +21,7 @@ def get_text(unit_notes):
     return text
 # dividing the text into chunks using langchain text splitter class
 def get_text_chunk(text):
-    text_splitter = CharacterTextSplitter(
-        
-        separator="\n",
-        chunk_size=1000,
-        chunk_overlap=200,
-        length_function=len
-    )
+    text_splitter = TokenTextSplitter(chunk_size=700, chunk_overlap=200)
     chunks = text_splitter.split_text(text)
     return chunks
 
@@ -71,10 +65,14 @@ def main():
         
 
     st.header("CATEXAM")
-    user_demand = st.text_input("Set a cat or exam in seconds", key="chat_input")
-
-    if user_demand:
+    with st.form("my_form", clear_on_submit=True):
+        user_demand = st.text_input("Set a cat or exam in seconds", key="chat_input")
+        submit= st.form_submit_button("submit")
+    if submit:
         handle_demand(user_demand)
+            
+
+
     with st.sidebar:
         st.subheader("Units you are currently teaching")
         unit_notes=st.file_uploader("Upload the notes for the unit", accept_multiple_files=True)
@@ -84,6 +82,8 @@ def main():
                 text_chunks= get_text_chunk(raw_text)
                 vectorstore = create_vectorstore(text_chunks)
                 st.session_state.converse = start_conversation(vectorstore)
+                st.success("Processed 😎")
+
 
 if __name__ == '__main__':
     main() 

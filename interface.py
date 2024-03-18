@@ -28,3 +28,12 @@ user_template = '''
     <div class="message">{{MSG}}</div>
 </div>
 '''
+# styl = f"""
+# <style>
+#     .stTextInput {{
+#       position: fixed;
+#       bottom: 3rem;
+#     }}
+# </style>
+# """
+# st.markdown(styl, unsafe_allow_html=True)
